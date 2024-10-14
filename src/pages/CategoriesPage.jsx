@@ -1,10 +1,28 @@
-import { Avatar, Button, Flex, List, Space } from 'antd'
+import { Avatar, Button, Flex, Form, Input, List, Modal, Space } from 'antd'
+import { useForm } from 'antd/es/form/Form'
 import React, { useEffect, useState } from 'react'
 
 function CategoriesPage() {
 
     const [categories, setCategories] = useState([])
+    const [open, setOpen] = useState(false)
+    const [form] = useForm()
 
+    function handleClose (){
+        setOpen(false)
+    }
+    
+    function handleOpen(){
+        setOpen(true)
+    }
+
+    function handleOk(){
+        form.submit()
+    }
+
+    function onFinish(){
+        console.log('form submit');
+    }
     function getCategories(){
         fetch('https://5709cdd829da4f5e.mokky.dev/categories')
         .then((res) => res.json())
@@ -22,7 +40,7 @@ function CategoriesPage() {
     <Space direction={'vertical'} style={{width: '100%'} } size={'large'}>
         <Flex align='center' justify='space-between'>
             <h1>Kategoriyalar Ro'yxati</h1>
-            <Button>+ Kategoriya Qo'shish</Button>
+            <Button onClick={handleOpen}>+ Kategoriya Qo'shish</Button>
         </Flex>
 
         <List
@@ -43,10 +61,34 @@ function CategoriesPage() {
         />
     </Space>
         
-    <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+       <Modal title="Kategoriya Qo'shish" okText="Qo'shish" cancelText="Bekor qilish" open={open} onOk={handleOk} onCancel={handleClose}>
+
+
+    <Form layout='vertical' onFinish={onFinish} form={form}>
+    <Form.Item
+      label="Kategoriya nomi"
+      name="name"
+      rules={[
+        {
+          required: true,
+          message: 'Iltimos, Kategoriyaga Nom Bering!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      label="Kategoriya Rasmi"
+      name="image"
+    >
+      <Input type='url' />
+    </Form.Item>
+
+    
+
+
+  </Form>
       </Modal>  
 
     </>
