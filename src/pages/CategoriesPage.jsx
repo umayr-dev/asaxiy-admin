@@ -1,6 +1,9 @@
-import { Avatar, Button, Flex, Form, Input, List, Modal, Space } from 'antd'
+import { Avatar, Button, Flex, Form, Input, List, message, Modal, Space } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import React, { useEffect, useState } from 'react'
+import Api from '../api'
+import {urls} from '../constants/urls'
+
 
 function CategoriesPage() {
 
@@ -10,6 +13,7 @@ function CategoriesPage() {
 
     function handleClose (){
         setOpen(false)
+        form.resetFields()
     }
     
     function handleOpen(){
@@ -20,14 +24,23 @@ function CategoriesPage() {
         form.submit()
     }
 
-    function onFinish(){
-        console.log('form submit');
+    function onFinish(values){
+
+        let obj = {...values, image: values.image ? values.image : ''}
+
+        Api.post(urls.categories.post, obj).then(res => {
+            if(res.data.id){
+                message.success("kategoriya muvaffaqiyatli qo'shildi!")
+                handleClose()
+                getCategories()
+            }
+        })
+        console.log(values);
     }
     function getCategories(){
-        fetch('https://5709cdd829da4f5e.mokky.dev/categories')
-        .then((res) => res.json())
-        .then((data) => setCategories(data))
-        .catch((err) => console.log(err, 'Error'))
+        Api.get(urls.categories.get).then( res => {
+            setCategories(res.data);
+        }).catch(err => console.log(err, 'Error'))
     }
 
     useEffect(()=> {
@@ -48,7 +61,7 @@ function CategoriesPage() {
           renderItem={(item) => (
             <List.Item key={item.id}>
               <List.Item.Meta
-                avatar={!!item.image.length ? <Avatar src={item.image} /> : null }
+                avatar={!!item.image?.length ? <Avatar src={item.image} /> : null }
                 title={item.name}
                 
               />
