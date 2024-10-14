@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
+import { menuItems } from '../constants/menuItems';
+import { Link, Route, Routes } from 'react-router-dom';
+import DashboardPage from '../pages/DashboardPage';
+import CategoriesPage from '../pages/CategoriesPage';
+import ProductsPage from '../pages/ProductsPage';
+import BannerPage from '../pages/BannerPage';
 const { Header, Sider, Content } = Layout;
 const Main = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -21,23 +24,7 @@ const Main = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-            },
-          ]}
+          items={menuItems.map(item => ({...item, label: <Link to={item.path}>{item.label}</Link> }))}
         />
       </Sider>
       <Layout>
@@ -67,7 +54,14 @@ const Main = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          Content
+          <Routes>
+
+            <Route path='/' element={<DashboardPage />}/>
+            <Route path='/categories' element={<CategoriesPage />}/>
+            <Route path='/product' element={<ProductsPage />}/>
+            <Route path='/banner' element={<BannerPage />}/>
+
+          </Routes>
         </Content>
       </Layout>
     </Layout>
