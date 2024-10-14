@@ -1,11 +1,12 @@
 import React from 'react'
+import Main from './components/Main'
 
 function App() {
   
 
   return (
     <>
-      <h1>salom</h1>
+      <Main />
     </>
   )
 }
