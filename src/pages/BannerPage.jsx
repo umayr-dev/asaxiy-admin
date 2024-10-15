@@ -24,7 +24,7 @@ function BannerPage() {
   }
   
   function handleClose (){
-    setOpen(false)
+    setIsModalOpen(false);
     setIsEdit(null)
     form.resetFields()
 
@@ -46,11 +46,31 @@ function BannerPage() {
     form.setFieldsValue(item)
   }
 
+  const handleDeleteOpen = (item)=>{
+    setDeleteModal(true)
+    setIsDelete(item)
+}
+
+function handleDeleteClose(){
+    setDeleteModal(false)
+    setIsDelete(null)
+}
+
+function handleDeleteOk(){
+    Api.delete(urls.banners.delete(isDelete.id)).then(res => {
+        if(res.status === 200 || res.status ===201){
+            handleDeleteClose()
+            getCategories()
+            message.success("Kategoriya muvaffaqiyatli o'chirildi")
+        }
+    })
+}
+
   const onFinish =(values)=>{
     
     let obj = {...values, image: values.image ? values.image : ''}
         if( isEdit === null ){
-            Api.post(urls.categories.post, obj).then(res => {
+            Api.post(urls.banners.post, obj).then(res => {
                 if(res.data.id){
                     message.success("kategoriya muvaffaqiyatli qo'shildi!")
                     handleClose()
@@ -58,7 +78,7 @@ function BannerPage() {
                 }
             })
         }else{
-            Api.patch(urls.categories.patch(isEdit.id), obj).then(res => {
+            Api.patch(urls.banners.patch(isEdit.id), obj).then(res => {
                 if(res.data.id){
                     message.success("kategoriya muvaffaqiyatli yangilandi!")
                     handleClose()
@@ -100,7 +120,7 @@ function BannerPage() {
             />
           }
           actions={[
-            <DeleteOutlined   key='delete'/>,
+            <DeleteOutlined onClick={()=>handleDeleteOpen(item)}  key='delete'/>,
             <EditOutlined onClick={()=> handleEdit(item)}  key="edit" />
           ]}
   >
@@ -143,7 +163,9 @@ function BannerPage() {
     </Form.Item>
   </Form>
       </Modal>
-          
+      <Modal title="Banner o'chirmoqchimisiz?" open={deleteModal} onCancel={handleDeleteClose} okText='Ha' cancelText="Yo'q" okType='danger' onOk={handleDeleteOk}>
+         <p>{isDelete?.position} nomli Banner o'chirmoqchimisiz?</p>
+      </Modal>
     </Space>
 
     
