@@ -11,6 +11,8 @@ function BannerPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm()
   const [isEdit, setIsEdit]=useState(null)
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [isDelete, setIsDelete] = useState(null)
   const getBanners = async() =>{
     try {
       const respons = await axios.get("https://5709cdd829da4f5e.mokky.dev/banners")
@@ -46,14 +48,25 @@ function BannerPage() {
 
   const onFinish =(values)=>{
     
-    Api.post(urls.banners.post, values).then(res =>{
-      message.success("Banner Muvoffaqiyatli Qo'shildi")
-      handleClose()
-      getBanners()
-    form.resetFields()
-    })
-    console.log(values);
-    
+    let obj = {...values, image: values.image ? values.image : ''}
+        if( isEdit === null ){
+            Api.post(urls.categories.post, obj).then(res => {
+                if(res.data.id){
+                    message.success("kategoriya muvaffaqiyatli qo'shildi!")
+                    handleClose()
+                    getCategories()
+                }
+            })
+        }else{
+            Api.patch(urls.categories.patch(isEdit.id), obj).then(res => {
+                if(res.data.id){
+                    message.success("kategoriya muvaffaqiyatli yangilandi!")
+                    handleClose()
+                    getCategories()
+                }
+            }).catch(err => console.log(err, 'categoriya edit'))
+        }
+        console.log(values);
   }
 
  
