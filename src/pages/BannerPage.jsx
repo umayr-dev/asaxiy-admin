@@ -50,6 +50,7 @@ function BannerPage() {
       message.success("Banner Muvoffaqiyatli Qo'shildi")
       handleClose()
       getBanners()
+    form.resetFields()
     })
     console.log(values);
     
@@ -92,7 +93,7 @@ function BannerPage() {
   >
     <Meta
       title={item.position} 
-      description={item.title}
+      description={item.id}
       />
   </Card>
         )
@@ -104,7 +105,7 @@ function BannerPage() {
 
     <Form.Item
       label="Sarlavha"
-      name="title"
+      name="position"
       rules={[
         {
           required: true,
