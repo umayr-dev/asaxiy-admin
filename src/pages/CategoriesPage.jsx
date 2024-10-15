@@ -52,7 +52,9 @@ function CategoriesPage() {
     function handleEdit(item){
         handleOpen()
         setIsEdit(item)
-        form.setFieldValue(item)
+        form.setFieldsValue(item)
+        console.log(item);
+        
     }
 
     function onFinish(values){
