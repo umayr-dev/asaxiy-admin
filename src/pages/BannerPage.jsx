@@ -23,14 +23,10 @@ function BannerPage() {
     }
   }
   
-  function handleClose (){
-    setIsModalOpen(false);
-    setIsEdit(null)
-    form.resetFields()
 
-}
   const showModal = () => {
     setIsModalOpen(true);
+    setIsEdit(null)
   };
   const handleOk = () => {
     setIsModalOpen(false);
@@ -38,6 +34,8 @@ function BannerPage() {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIsEdit(null)
+    form.resetFields()
   };
 
   const handleEdit =(item)=>{
@@ -60,8 +58,8 @@ function handleDeleteOk(){
     Api.delete(urls.banners.delete(isDelete.id)).then(res => {
         if(res.status === 200 || res.status ===201){
             handleDeleteClose()
-            getCategories()
-            message.success("Kategoriya muvaffaqiyatli o'chirildi")
+            getBanners()
+            message.success("Banner muvaffaqiyatli o'chirildi")
         }
     })
 }
@@ -73,7 +71,7 @@ function handleDeleteOk(){
             Api.post(urls.banners.post, obj).then(res => {
                 if(res.data.id){
                     message.success("kategoriya muvaffaqiyatli qo'shildi!")
-                    handleClose()
+                    handleCancel()
                     getCategories()
                 }
             })
@@ -81,7 +79,7 @@ function handleDeleteOk(){
             Api.patch(urls.banners.patch(isEdit.id), obj).then(res => {
                 if(res.data.id){
                     message.success("kategoriya muvaffaqiyatli yangilandi!")
-                    handleClose()
+                    handleCancel()
                     getCategories()
                 }
             }).catch(err => console.log(err, 'categoriya edit'))
@@ -133,7 +131,7 @@ function handleDeleteOk(){
       })
     }
 
-  <Modal title="Banner Qo'shish" okText="Qo'shish" cancelText="Bekor Qilish" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+  <Modal title={`Kategoriya ${isEdit!== null ? 'yangilash' : "qo'shish"}`} okText={isEdit!== null ? 'yangilash' : "qo'shish"} cancelText="Bekor qilish" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
     <Form layout='vertical' onFinish={onFinish}  form={form} name="basic">
 
     <Form.Item
