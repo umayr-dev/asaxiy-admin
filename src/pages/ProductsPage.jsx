@@ -59,12 +59,12 @@ function ProductsPage() {
     setCategoriesLoading(true)
     Api.get(urls.categories.get).then((res) => setCategories(res.data)).catch(err => console.log(err, "Error in fetching categories")).finally(()=> setCategoriesLoading(false))
   }
-  function handleAddclick(){
+  function handleAddClick(){
     form.submit()
   }
 
   function onSubmit(e){
-    
+
   }
 
   useEffect(()=> {
