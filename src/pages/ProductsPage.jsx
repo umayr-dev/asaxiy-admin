@@ -1,4 +1,4 @@
-import { Button, Drawer, Flex, Image, Space, Table, Form, Input, Row, Col, InputNumber, Switch } from 'antd'
+import { Button, Drawer, Flex, Image, Space, Table, Form, Input, Row, Col, InputNumber, Switch, Select } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { urls } from '../constants/urls'
 import Api from '../api'
@@ -6,7 +6,12 @@ import Api from '../api'
 function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [form]=Form.useForm();
+  const isSale =Form.useWatch('isSale', form);
+  const [categories, setCategories]=useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(false)
+
 
   function handleDrawerOpen(){
     setDrawerOpen(true)
@@ -50,8 +55,14 @@ function ProductsPage() {
     }).catch(err => console.log(err, "Error in get products")).finally(()=> setLoading(false))
   }
 
+  function getCategories(){
+    setCategoriesLoading(true)
+    Api.get(urls.categories.get).then((res) => setCategories(res.data)).catch(err => console.log(err, "Error in fetching categories")).finally(()=> setCategoriesLoading(false))
+  }
+
   useEffect(()=> {
     getProducts()
+    getCategories()
   }, [])
 
   return (
@@ -64,7 +75,7 @@ function ProductsPage() {
         <Table dataSource={products} loading={loading} columns={columns}/>
 
         <Drawer width='600px' title="Mahsulot Yaratish" open={drawerOpen} onClose={handleDrawerClose}>
-          <Form layout='vertical'>
+          <Form form={form} layout='vertical'>
             <Form.Item name='name' label='Mahsulot nomi' rules={[
               {
                 required: true,
@@ -81,14 +92,7 @@ function ProductsPage() {
             ]}>
               <Input.TextArea  rows={6}/>
             </Form.Item>
-            <Form.Item name='name' label='Mahsulot nomi' rules={[
-              {
-                required: true,
-                message: 'Mahsulot nomini kiriting!'
-              }
-            ]}>
-              <Input />
-            </Form.Item>
+
             <Row gutter={[8, 0]}>
 
               <Col span={8}>
@@ -103,8 +107,8 @@ function ProductsPage() {
               </Col>
 
               <Col span={8}>
-              <Form.Item name='discount_price' label='Mahsulot chegirma narxi' >
-              <InputNumber addonAfter={"so'm"}  controls={false} style={{width: '100%'}} />
+              <Form.Item name='months' label='Mahsulot oyi' >
+              <InputNumber addonAfter={"oy"}  controls={false} style={{width: '100%'}} />
             </Form.Item>
               </Col> 
 
@@ -119,22 +123,47 @@ function ProductsPage() {
 
               <Col span={8}>
               <Form.Item name='isNew' label='Mahsulot yangimi'>
-              <Switch checkedChildren="Ha" unCheckedChildren="Yo'q" defaultChecked />
+              <Switch checkedChildren="Ha" unCheckedChildren="Yo'q" defaultChecked={false} />
             </Form.Item>
               </Col>
 
               <Col span={8}>
-              <Form.Item name='isDiscount' label='Mahsulot chegirmadami' >
-              <Switch checkedChildren="Ha" unCheckedChildren="Yo'q" defaultChecked />
+              <Form.Item name='isSale' label='Mahsulot chegirmadami' >
+              <Switch checkedChildren="Ha" unCheckedChildren="Yo'q" defaultChecked={false} />
             </Form.Item>
               </Col> 
 
               <Col span={8}>
-              <Form.Item name='price_per_month' label='Mahsulot oylik tolovi' >
-              <Switch checkedChildren="Ha" unCheckedChildren="Yo'q" defaultChecked />
+              <Form.Item name='isPopular' label='Mahsulot mashhurmi' >
+              <Switch checkedChildren="Ha" unCheckedChildren="Yo'q" defaultChecked={false} />
             </Form.Item>
               </Col>
             </Row>
+
+             <Row gutter={[8, 0]}>
+
+            { isSale &&  <Col span={8}>
+              <Form.Item name='discount_price' label='Mahsulot chegirma narxi' >
+              <InputNumber addonAfter={"so'm"} controls={false} style={{width: '100%'}} />
+            </Form.Item>
+              </Col>}
+
+              <Col span={8}>
+              <Form.Item name='in_stock' label='Ombordagi soni' >
+              <InputNumber addonAfter={"ta"}  controls={false} style={{width: '100%'}} />
+            </Form.Item>
+              </Col> 
+
+              <Col span={8}>
+              <Form.Item name='reviews' label='Sarhlar soni' >
+              <InputNumber addonAfter={"ta"}  controls={false} style={{width: '100%'}} />
+            </Form.Item>
+              </Col> 
+              <Form.Item name='category_id' label='Mahsulot kategoriyasi' >
+                <Select loading={categoriesLoading} options={categories.map(({id: value , name: label}) => ({ value, label}))} />
+            </Form.Item>
+            </Row>
+
 
           </Form>
         </Drawer>
