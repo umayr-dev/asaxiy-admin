@@ -2,7 +2,7 @@ import { Button, Drawer, Flex, Image, Space, Table, Form, Input, Row, Col, Input
 import React, { useEffect, useState } from 'react'
 import { urls } from '../constants/urls'
 import Api from '../api'
-
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -59,6 +59,13 @@ function ProductsPage() {
     setCategoriesLoading(true)
     Api.get(urls.categories.get).then((res) => setCategories(res.data)).catch(err => console.log(err, "Error in fetching categories")).finally(()=> setCategoriesLoading(false))
   }
+  function handleAddclick(){
+    form.submit()
+  }
+
+  function onSubmit(e){
+    
+  }
 
   useEffect(()=> {
     getProducts()
@@ -74,8 +81,8 @@ function ProductsPage() {
 
         <Table dataSource={products} loading={loading} columns={columns}/>
 
-        <Drawer width='600px' title="Mahsulot Yaratish" open={drawerOpen} onClose={handleDrawerClose}>
-          <Form form={form} layout='vertical'>
+        <Drawer extra={<Button onClick={handleAddClick}>Yaratish</Button>} width='600px' title="Mahsulot Yaratish" open={drawerOpen} onClose={handleDrawerClose}>
+          <Form form={form} layout='vertical' onFinish={onsubmit}>
             <Form.Item name='name' label='Mahsulot nomi' rules={[
               {
                 required: true,
@@ -163,6 +170,42 @@ function ProductsPage() {
                 <Select loading={categoriesLoading} options={categories.map(({id: value , name: label}) => ({ value, label}))} />
             </Form.Item>
             </Row>
+            <Form.List name="images">
+      {(fields, { add, remove }) => (
+        <>
+          {fields.map(({ key, name, ...restField }) => (
+            <Space
+              key={key}
+              style={{
+                display: 'flex',
+                marginBottom: 8,
+              }}
+              align="center"
+            >
+              <Form.Item
+                {...restField}
+                name={[name]}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Mahsulot rasmini kiriting!',
+                  },
+                ]}
+              >
+                <Input type="url"  style={{flex: '1'}}/>
+              </Form.Item>
+
+              <MinusCircleOutlined onClick={() => remove(name)} />
+            </Space>
+          ))}
+          <Form.Item>
+            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+              Yana rasm qo'shish
+            </Button>
+          </Form.Item>
+        </>
+      )}
+    </Form.List>
 
 
           </Form>
