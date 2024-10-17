@@ -13,6 +13,8 @@ function BannerPage() {
   const [isEdit, setIsEdit]=useState(null)
   const [deleteModal, setDeleteModal] = useState(false);
   const [isDelete, setIsDelete] = useState(null)
+
+
   const getBanners = async() =>{
     try {
       const respons = await axios.get("https://5709cdd829da4f5e.mokky.dev/banners")
@@ -70,7 +72,7 @@ function handleDeleteOk(){
         if( isEdit === null ){
             Api.post(urls.banners.post, obj).then(res => {
                 if(res.data.id){
-                    message.success("kategoriya muvaffaqiyatli qo'shildi!")
+                    message.success("Banner muvaffaqiyatli qo'shildi!")
                     handleCancel()
                     getCategories()
                 }
@@ -78,11 +80,11 @@ function handleDeleteOk(){
         }else{
             Api.patch(urls.banners.patch(isEdit.id), obj).then(res => {
                 if(res.data.id){
-                    message.success("kategoriya muvaffaqiyatli yangilandi!")
+                    message.success("Banner muvaffaqiyatli yangilandi!")
                     handleCancel()
                     getCategories()
                 }
-            }).catch(err => console.log(err, 'categoriya edit'))
+            }).catch(err => console.log(err, 'banner edit'))
         }
         console.log(values);
   }

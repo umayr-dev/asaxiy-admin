@@ -136,7 +136,7 @@ function CategoriesPage() {
     </Form.Item>
 
     <Form.Item
-      label="Kategoriya Rasmi"
+      label="Kategoriya rasmi"
       name="image"
     >
       <Input type='url' />
