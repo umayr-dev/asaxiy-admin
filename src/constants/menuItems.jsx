@@ -2,7 +2,8 @@ import {
     TableOutlined,
     BarChartOutlined,
     ShoppingOutlined,
-    CodepenOutlined
+    CodepenOutlined,
+    FilterOutlined
   } from '@ant-design/icons';
 export const menuItems = [
     
@@ -30,5 +31,11 @@ export const menuItems = [
             label: 'Banner',
             path: '/banner'
         },
+        {
+          key: '5',
+          icon: <FilterOutlined />,
+          label: 'Buyurtmalar',
+          path: '/orders'
+      }
       
 ]

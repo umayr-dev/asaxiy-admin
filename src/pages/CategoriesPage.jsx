@@ -9,7 +9,7 @@ function CategoriesPage() {
     const [categories, setCategories] = useState([]);
     const [open, setOpen] = useState(false);
     const [form] = Form.useForm();
-    const [isEdit, setIsEdit] =useState(null);
+    const [isEdit, setIsEdit] = useState(null);
     const [loading, setLoading] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [isDelete, setIsDelete] = useState(null)
