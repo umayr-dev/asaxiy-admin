@@ -33,6 +33,18 @@ export const menuItems = [
         },
         {
           key: '5',
+          icon: <TableOutlined />,
+          label: 'Brands',
+          path: '/brand'
+      },
+      {
+        key: '6',
+        icon: <TableOutlined />,
+        label: 'Foydalanuvchilar',
+        path: '/users'
+    },
+        {
+          key: '7',
           icon: <FilterOutlined />,
           label: 'Buyurtmalar',
           path: '/orders'

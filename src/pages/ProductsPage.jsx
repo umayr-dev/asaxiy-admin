@@ -19,7 +19,6 @@ import React, { useEffect, useState } from "react";
 import { urls } from "../constants/urls";
 import Api from "../api";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import Item from "antd/es/list/Item";
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -28,7 +27,9 @@ function ProductsPage() {
   const [form] = Form.useForm();
   const isSale = Form.useWatch("isSale", form);
   const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [categoriesLoading, setCategoriesLoading] = useState(false);
+  const [brandsLoading, setBrandsLoading] = useState(false);
   const [postLoading, setPostLoading] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false);
   const [isDelete, setIsDelete] = useState(null)
@@ -149,6 +150,15 @@ function ProductsPage() {
       .catch((err) => console.log(err, "Error in fetching categories"))
       .finally(() => setCategoriesLoading(false));
   }
+
+  function getBrands() {
+    setBrandsLoading(true);
+    Api.get(urls.brands.get)
+      .then((res) => setBrands(res.data))
+      .catch((err) => console.log(err, "Error in fetching brand"))
+      .finally(() => setBrandsLoading(false));
+  }
+
   function handleAddClick() {
     form.submit();
   }
@@ -172,6 +182,7 @@ function ProductsPage() {
   useEffect(() => {
     getProducts();
     getCategories();
+    getBrands();
   }, []);
 
   return (
@@ -181,7 +192,7 @@ function ProductsPage() {
         <Button onClick={handleDrawerOpen}>+ Mahsulot Qo'shish</Button>
       </Flex>
 
-      <Table dataSource={products} loading={loading} columns={columns} rowKey='id'/>
+      <Table dataSource={products} loading={loading} columns={columns} rowKey='id'/> 
 
       <Drawer
       loading={postLoading}
@@ -326,21 +337,27 @@ function ProductsPage() {
                 />
               </Form.Item>
             </Col>
+
             <Form.Item rules={[
               {
                 required: true,
                 message: 'Kategoriyani tanlang'
               }
             ]} name="category_id" label="Mahsulot kategoriyasi">
-              <Select
-                loading={categoriesLoading}
-                key='value'
-                options={categories.map(({ id: value, name: label }) => ({
-                  value,
-                  label,
-                }))}
+              <Select loading={categoriesLoading} key='value' options={categories.map(({ id: value, name: label }) => ({ value, label,}))}
               />
             </Form.Item>
+
+            <Form.Item rules={[
+              {
+                required: true,
+                message: 'Brand tanlang'
+              }
+            ]} name="brand_id" label="Mahsulot Brandi">
+              <Select loading={brandsLoading} key='value' options={brands.map(({ id: value, name: label }) => ({ value, label,}))}
+              />
+            </Form.Item>
+
           </Row>
           <Form.List name="images">
             {(fields, { add, remove }) => (
