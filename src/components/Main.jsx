@@ -12,6 +12,7 @@ import ProductsPage from '../pages/ProductsPage';
 import BannerPage from '../pages/BannerPage';
 import BrandPage from '../pages/BrandPage';
 import UsersPage from '../pages/UsersPage';
+import Orders from '../pages/Orders';
 const { Header, Sider, Content } = Layout;
 const Main = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -64,6 +65,7 @@ const Main = () => {
             <Route path='/banner' element={<BannerPage />}/>
             <Route path='/brand' element={<BrandPage />}/>
             <Route path='/users' element={<UsersPage />}/>
+            <Route path='/orders' element={<Orders />}/>
 
           </Routes>
         </Content>
