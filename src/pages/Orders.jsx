@@ -12,12 +12,8 @@ function Orders() {
   const [loading, setLoading] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [isDelete, setIsDelete] = useState(null);
-  const [userOrdersCount, setUserOrdersCount] = useState(0); 
 
-  useEffect(() => {
-    getOrders();
-    getProducts();  // Mahsulotlar ro'yxatini olish
-  }, []);
+
 
   
   function getProducts() {
@@ -25,15 +21,6 @@ function Orders() {
       setProducts(res.data);
     }).catch(err => console.log(err, 'Error while fetching products'));
   }
-
-  // function getOrders() {
-  //   setLoading(true);
-  //   Api.get(urls.orders.get).then((res) => {
-  //     setOrders(res.data);
-  //     setUserOrdersCount(res.data.length); 
-  //   }).catch(err => console.log(err, 'Error while fetching orders')).finally(() => setLoading(false));
-  // }
-
 
   const columns = [
     {
@@ -142,9 +129,10 @@ function Orders() {
       setOrders(res.data);
     }).catch(err => console.log(err, 'Error')).finally(() => setLoading(false));
   }
-
+  
   useEffect(() => {
     getOrders();
+    getProducts();
   }, []);
 
   return (
@@ -161,7 +149,6 @@ function Orders() {
           columns={columns}
           rowKey="id"
         />
-        {/* <p>Foydalanuvchi qancha zakaz qilgan: {userOrdersCount}</p> */}
 
       </Space>
 

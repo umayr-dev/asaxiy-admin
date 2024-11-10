@@ -40,7 +40,7 @@ function Dashboard() {
         orders: orders.data.length
       });
     } catch (err) {
-      message.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
+      message.error('Malumotlarni olishda xatolik yuz berdi!');
       console.error(err);
     } finally {
       setLoading(false);
