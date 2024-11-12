@@ -123,7 +123,7 @@ function ProductsPage() {
       defaultChecked={product.isPopular} />
     },
     {
-      title: 'Actions',
+      title: '',
       render :(item)=> <Space>
         <Button onClick={()=> handleEditClick(item)}>Yangilash</Button>
         <Button danger onClick={()=> handleDeleteOpen(item)}>O'chirish</Button>
