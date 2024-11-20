@@ -17,7 +17,7 @@ function BannerPage() {
 
   const getBanners = async() =>{
     try {
-      const respons = await axios.get("https://5709cdd829da4f5e.mokky.dev/banners")
+      const respons = await axios.get("https://9fd0d88e6d8305b1.mokky.dev/banners")
       setBanner(respons.data)
     } catch (error) {
       console.log(error);
