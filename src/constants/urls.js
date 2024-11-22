@@ -18,10 +18,10 @@ export const  urls ={
         delete: (id)=> `/products/${id}`
     },
     brands : {
-        get: '/brand',
-        post: '/brand',
-        patch: (id)=> `/brand/${id}`,
-        delete: (id)=> `/brand/${id}`
+        get: '/brands',
+        post: '/brands',
+        patch: (id)=> `/brands/${id}`,
+        delete: (id)=> `/brands/${id}`
     },
     users : {
         get: '/users',
